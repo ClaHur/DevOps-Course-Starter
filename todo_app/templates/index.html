@@ -16,5 +16,14 @@
         {% endfor %}
       </ul>
     </div>
+    <form action="/add_item" method="POST">
+      <div>
+        <label for="todo">What do you need to do? </label>
+        <input type="text" name="todo" id="todo" required />
+      </div>
+      <div>
+        <input type="submit" value="Add item" />
+      </div>
+    </form>
   </div>
 {% endblock %}
