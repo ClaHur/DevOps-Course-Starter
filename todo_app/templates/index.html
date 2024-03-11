@@ -3,27 +3,99 @@
 
 {% block content %}
   <div class="jumbotron">
-    <h1 class="display-4">To-Do App</h1>
-    <p class="lead">Just another to-do app.</p>
+    <h1 class="display-4">Clare's todo list</h1>
   </div>
 
   <div class="row">
     <div class="col-md-12">
-      <h2>Items</h2>
+      <form action="/add_item" method="POST">
+        <div class = "to-do-input">
+          <input type="text" name="todo" id="todo" placeholder="What do you need to do?" required />
+          <input type="submit" id="addItem" value="Add item" />
+        </div>
+      </form>
+      <h2>To Do</h2>
       <ul class="list-group mb-4">
         {% for item in items %}
-          <li>{{ item.title }}</li>
+          <div class="to-do-item">
+            <li>{{ item.name }}</li>
+            <input type="checkbox" class="update-status-checkbox" value="{{ item.id }}" data-action="/update_status" {% if item.status == lists[1].name %}checked{% endif %}>
+          </div>
         {% endfor %}
       </ul>
     </div>
-    <form action="/add_item" method="POST">
-      <div>
-        <label for="todo">What do you need to do? </label>
-        <input type="text" name="todo" id="todo" required />
-      </div>
-      <div>
-        <input type="submit" value="Add item" />
-      </div>
-    </form>
   </div>
+
+<style>
+  body {
+    background-color: #f8f9fa;
+    padding-top: 20px;
+  }
+  .jumbotron {
+    background-color: #343a40;
+    color: #fff;
+    text-align: center;
+    padding: 2rem 1rem;
+    margin-bottom: 20px;
+    background-color: darkgreen;
+    border-style: dotted;
+  }
+  .row {
+    margin: 0 auto;
+  }
+  .update-status-checkbox {
+    height: 2em;
+    width: 20%;
+    accent-color: darkgreen;
+    font-family: sans-serif;
+  }
+  li {
+    width: 50%;
+    list-style-position: inside;
+  }
+  .to-do-item {
+    display: flex;
+    font-size: larger;
+    margin-top: 1em;
+  }
+  .to-do-input {
+    display: flex;
+    font-size: larger;
+    margin-bottom: 1em;
+    height: 3em;
+  }
+  #todo, #addItem {
+    border-radius: 5px;
+  }
+  #todo {
+    width: 70%;
+    margin-right: 0.5em;
+    padding: 1em;
+  }
+  #addItem {
+    padding: 0 2em 0 2em;
+    font-weight: bold;
+    background: pink;
+  }
+</style>
+
+<script>
+  const checkboxes = document.querySelectorAll('.update-status-checkbox');
+
+  checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+      const itemId = this.value;
+      const action = this.dataset.action;
+      const isChecked = this.checked;
+
+      fetch(action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ itemId: itemId, isChecked: isChecked })
+      })
+    });
+  });
+</script>
 {% endblock %}

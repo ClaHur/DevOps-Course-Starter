@@ -57,3 +57,15 @@ Press CTRL+C to quit
  * Debugger PIN: 113-666-066
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+## Connection to Trello
+To connect the app to Trello:
+
+- Create a Trello account and a 'todo' board if you don't have one already
+- Create an API Key for Trello. To do this you’ll first need to create a Trello Power Up [from this page](https://trello.com/power-ups/admin)
+- After creating a Trello Power Up you’ll be given the option to generate a new API key
+- Create an API Token for Trello. This can be done by clicking the “Token” link on the same page where your API key is displayed.
+
+Add you API key, Token and Board ID into the .env file. You can use the instructions [here](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/#your-first-api-call) to find out you Board ID.
+
+NOTE: The app assumes your Trello board has two lists. The first should be the 'todo' list (though list naming doesn't matter) and the second should be the 'complete' list.
