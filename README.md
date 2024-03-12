@@ -66,6 +66,6 @@ To connect the app to Trello:
 - After creating a Trello Power Up you’ll be given the option to generate a new API key
 - Create an API Token for Trello. This can be done by clicking the “Token” link on the same page where your API key is displayed.
 
-Add you API key, Token and Board ID into the .env file. You can use the instructions [here](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/#your-first-api-call) to find out you Board ID.
+Add you API key, Token, Board ID and list names* into the .env file. You can use the instructions [here](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/#your-first-api-call) to find out you Board ID.
 
-NOTE: The app assumes your Trello board has two lists. The first should be the 'todo' list (though list naming doesn't matter) and the second should be the 'complete' list.
+NOTE: The app assumes your Trello board has two lists. The first should be the 'todo' list and the second should be the 'done' list. Choose whatever names you like for your lists, so long as they match between Trello and your env file. 

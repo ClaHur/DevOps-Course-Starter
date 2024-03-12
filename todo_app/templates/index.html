@@ -6,23 +6,50 @@
     <h1 class="display-4">Clare's todo list</h1>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <form action="/add_item" method="POST">
-        <div class = "to-do-input">
-          <input type="text" name="todo" id="todo" placeholder="What do you need to do?" required />
-          <input type="submit" id="addItem" value="Add item" />
-        </div>
-      </form>
-      <h2>To Do</h2>
-      <ul class="list-group mb-4">
-        {% for item in items %}
-          <div class="to-do-item">
-            <li>{{ item.name }}</li>
-            <input type="checkbox" class="update-status-checkbox" value="{{ item.id }}" data-action="/update_status" {% if item.status == lists[1].name %}checked{% endif %}>
-          </div>
-        {% endfor %}
-      </ul>
+  <div class="col-md-12">
+    <form action="/add_item" method="POST">
+      <div class="to-do-input">
+        <input type="text" name="todo" id="todo" placeholder="What do you need to do?" required />
+        <input type="submit" id="addItem" value="Add item" />
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col-md-4 list-todo">
+        <h2>To Do</h2>
+        <ul class="list-group mb-4">
+          {% for item in view_model.todo_items %}
+              <div class="to-do-item">
+                <li>{{ item.name }}</li>
+                <span><button class="status-change-button right" onClick="updateStatus('{{ item.id }}', '{{ list_names.in_progress }}')">></button></span>
+              </div>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-md-4 list-progress">
+        <h2>In Progress</h2>
+        <ul class="list-group mb-4">
+          {% for item in view_model.inprogress_items %}
+              <div class="in-progress-item">
+                <li>{{ item.name }}</li>
+                <span><button class="status-change-button left" onClick="updateStatus('{{ item.id }}', '{{ list_names.to_do }}')"><</button></span>
+                <span><button class="status-change-button right" onClick="updateStatus('{{ item.id }}', '{{ list_names.done }}')">></button></span>
+              </div>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="col-md-4 list-done">
+        <h2>Done</h2>
+        <ul class="list-group mb-4">
+          {% for item in view_model.done_items %}
+              <div class="done-item">
+                <li>{{ item.name }}</li>
+                <span><button class="status-change-button left" onClick="updateStatus('{{ item.id }}', '{{ list_names.in_progress }}')"><</button></span>
+                <span><button class="status-change-button right" onClick="deleteCard('{{ item.id }}')">✓</button></span>
+              </div>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -50,13 +77,18 @@
     font-family: sans-serif;
   }
   li {
-    width: 50%;
+    width: 100%;
     list-style-position: inside;
+    list-style-type: none;
   }
-  .to-do-item {
+  .to-do-item, .in-progress-item, .done-item {
     display: flex;
     font-size: larger;
     margin-top: 1em;
+    border-style: dashed;
+    border-width: 2px;
+    padding: 0.5em;
+    border-radius: 1em;
   }
   .to-do-input {
     display: flex;
@@ -68,34 +100,69 @@
     border-radius: 5px;
   }
   #todo {
-    width: 70%;
+    width:100%;
     margin-right: 0.5em;
     padding: 1em;
   }
   #addItem {
     padding: 0 2em 0 2em;
     font-weight: bold;
-    background: pink;
+    background: pink;    
+    border-style: outset;
+    border-color: pink;
+  }
+  .status-change-button {
+    border-radius: 0.5em;
+    margin-left: 0.5em;
+    color: white;
+    border-style: outset;
+    font-size: large; 
+  }
+  .status-change-button.right {
+    background-color: green;
+    border-color: green;
+  }
+  .status-change-button.left {
+    background-color: red;
+    border-color: red;
+  }
+  .list-todo .to-do-item {
+    border-color: red;
+    background-color: #edd5d5;
+  }
+  .list-progress .in-progress-item {
+    border-color: orange;
+    background-color: #faf4de;
+  }
+  .list-done .done-item {
+    border-color: green;
+    background-color: #d9edd5;
   }
 </style>
 
 <script>
-  const checkboxes = document.querySelectorAll('.update-status-checkbox');
-
-  checkboxes.forEach(function(checkbox) {
-    checkbox.addEventListener('change', function() {
-      const itemId = this.value;
-      const action = this.dataset.action;
-      const isChecked = this.checked;
-
-      fetch(action, {
+  const updateStatus = function(itemId, newStatus) {
+      fetch("/update_status", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ itemId: itemId, isChecked: isChecked })
-      })
-    });
-  });
+        body: JSON.stringify({ itemId: itemId, newStatus: newStatus })
+      }).then(() => {
+          window.location.href = '/';
+      });
+  }
+
+  const deleteCard = function(itemId) {
+      fetch("/delete_item", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ itemId: itemId })
+      }).then(() => {
+          window.location.href = '/';
+      });
+  }
 </script>
 {% endblock %}
