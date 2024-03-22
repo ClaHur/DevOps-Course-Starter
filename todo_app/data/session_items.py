@@ -13,6 +13,12 @@ class TrelloService():
         self.base_trello_url = "https://api.trello.com/1"
         self.list_names = ListNames()
 
+    def clear_cache(self):
+        try:
+            os.remove('lists_cache.pickle')
+        except FileNotFoundError:
+            return
+
     def get_lists(self):
         """
         Returns all the lists on the trello board

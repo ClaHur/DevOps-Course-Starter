@@ -69,3 +69,9 @@ To connect the app to Trello:
 Add you API key, Token, Board ID and list names* into the .env file. You can use the instructions [here](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/#your-first-api-call) to find out you Board ID.
 
 NOTE: The app assumes your Trello board has two lists. The first should be the 'todo' list and the second should be the 'done' list. Choose whatever names you like for your lists, so long as they match between Trello and your env file. 
+
+## Tests
+To run the automated unit tests:
+```bash
+$ poetry run pytest
+```
