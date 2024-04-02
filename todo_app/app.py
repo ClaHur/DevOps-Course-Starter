@@ -10,20 +10,11 @@ def create_app():
     app.config.from_object(Config())
     trello_service = TrelloService()
 
-    def reload_index():
-        trello_service.clear_cache()
-        return redirect('/')
-
     @app.route('/')
     def index():
-        try:
-            item_view_model = ViewModel(trello_service.get_items(), trello_service.get_lists())
-            list_names = ListNames()
-            return render_template('index.html', view_model=item_view_model, list_names=list_names)
-        except Exception as e:
-            # An exception will occur if the cached lists don't match the list IDs in .env
-            # In this case we clear the cache and reload
-            return reload_index()
+        item_view_model = ViewModel(trello_service.get_items(), trello_service.get_lists())
+        list_names = ListNames()
+        return render_template('index.html', view_model=item_view_model, list_names=list_names)
 
     @app.route("/add_item", methods=["POST"])
     def add_item():

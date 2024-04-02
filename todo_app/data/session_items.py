@@ -1,4 +1,3 @@
-import pickle
 import requests
 import os
 
@@ -12,28 +11,15 @@ class TrelloService():
         self.token = os.getenv("TRELLO_TOKEN")
         self.base_trello_url = "https://api.trello.com/1"
         self.list_names = ListNames()
-
-    def clear_cache(self):
-        try:
-            os.remove('lists_cache.pickle')
-        except FileNotFoundError:
-            return
+        self.lists_cache = None
 
     def get_lists(self):
         """
-        Returns all the lists on the trello board
+        Returns all the lists on the Trello board
         """
-        try:
-            with open('lists_cache.pickle', 'rb') as f:
-                lists = pickle.load(f)
-        except FileNotFoundError:
-            lists = None
-        if lists is None:
-            lists = self.fetch_lists_from_api()
-            with open('lists_cache.pickle', 'wb') as f:
-                pickle.dump(lists, f)
-
-        return lists
+        if self.lists_cache is None:
+            self.lists_cache = self.fetch_lists_from_api()
+        return self.lists_cache
         
 
     def fetch_lists_from_api(self):
@@ -48,7 +34,7 @@ class TrelloService():
 
         lists = []
         for list in response_json:
-            list_details = self.get_list(list["id"])
+            list_details = List(list["id"], list["name"])
             lists.append(list_details)
 
         return lists

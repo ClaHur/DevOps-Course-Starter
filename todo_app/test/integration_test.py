@@ -1,5 +1,4 @@
 import os
-import pickle
 from dotenv import load_dotenv, find_dotenv
 import pytest
 import requests
@@ -42,12 +41,6 @@ def stub(url, params={}):
     raise Exception(f'Integration test did not expect URL "{url}"')
 
 def test_index_page(monkeypatch, client):
-    def mock_pickle_load(args):
-        raise FileNotFoundError
-    def mock_pickle_dump(data, file):
-        return
-    monkeypatch.setattr("todo_app.data.session_items.pickle.load", mock_pickle_load)
-    monkeypatch.setattr("todo_app.data.session_items.pickle.dump", mock_pickle_dump)
     monkeypatch.setattr(requests, 'get', stub)
 
     response = client.get('/')
