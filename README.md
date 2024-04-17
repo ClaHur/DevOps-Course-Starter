@@ -75,3 +75,11 @@ To run the automated unit tests:
 ```bash
 $ poetry run pytest
 ```
+
+## Provisioning a VM from an Ansible Control Node
+Ensure the contents of the [ansible](ansible) folder are on the control node. Verify the IP address in the ['inventory'](ansible/inventory) matches the managed node you wish to provision the VM on. 
+
+Run the following command, providing the env variables when prompted:
+```bash
+$ ansible-playbook playbook.yaml -i inventory
+```
