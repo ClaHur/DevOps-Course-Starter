@@ -30,8 +30,6 @@
         dest: /opt/todoapp
         version: remote-branch
       become: yes
-    - name: Change directory to /opt/todoapp
-      shell: cd /opt/todoapp
     - name: Run poetry install
       shell: poetry install
       args:
