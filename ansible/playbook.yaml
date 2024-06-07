@@ -4,12 +4,11 @@
   tasks:
     - name: Install Git and Python
       yum:
-        name: "{{ item }}"
+        name: 
+          - git
+          - python3
+          - python3-pip
         state: present
-      loop:
-        - git
-        - python3
-        - python3-pip
       become: yes
     - name: Install Poetry
       pip:
