@@ -19,14 +19,11 @@
         path: /opt/todoapp
         state: directory
         mode: 0755
-      become: yes
-    - name: Set ec2-user as owner of /opt/todoapp directory
-      file:
-        path: /opt/todoapp
         owner: ec2-user
         group: ec2-user
         recurse: yes
       become: yes
+
     - name: Store git repo in todoapp folder
       git:
         repo: https://github.com/ClaHur/DevOps-Course-Starter.git
