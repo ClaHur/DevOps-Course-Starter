@@ -1,0 +1,5 @@
+ansible
+.github
+.vscode
+.venv
+.env

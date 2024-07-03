@@ -83,3 +83,34 @@ Run the following command, providing the env variables when prompted:
 ```bash
 $ ansible-playbook playbook.yaml -i inventory
 ```
+
+## Running the app in a Docker container
+### Build the Docker Image:
+Use the following command to build the Docker image and tag it as todo-app.
+
+Production:
+```bash
+$ docker build --target production --tag todo-app:prod .
+```
+
+Development:
+```bash
+$ docker build --target development --tag todo-app:dev .
+```
+
+### Run the Docker Container:
+Run the container using the .env file to set environment variables and map port 5000 of the container to port 5000 on your host machine.
+
+Production:
+```bash
+$ docker run --env-file .env -p 5000:5000 todo-app:prod 
+```
+
+Development (with hot reload - remove mount paramter if unwanted):
+```bash
+$ docker run --env-file .env -p 5000:5000 --mount "type=bind,source=$(pwd)/todo_app,target=/app/todo_app" todo-app:dev
+```
+
+
+
+
