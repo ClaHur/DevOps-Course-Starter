@@ -2,8 +2,8 @@ FROM python:3.9-slim as base
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    curl \
+RUN apt-get update \
+    && apt-get install -y curl \
     && curl -sSL https://install.python-poetry.org | python3 - \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
