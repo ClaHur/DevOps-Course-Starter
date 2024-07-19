@@ -1,5 +1,15 @@
 name: Continuous Integration
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - '.github/**'
+      - './ansible/**'
+      - 'README.md'
+  pull_request:
+    paths-ignore:
+      - '.github/**'
+      - './ansible/**'
+      - 'README.md'
 
 jobs:
   build:
