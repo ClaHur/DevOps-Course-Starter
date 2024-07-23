@@ -35,3 +35,9 @@ ENV FLASK_DEBUG=1
 EXPOSE 5000
 
 CMD ["poetry", "run", "flask", "run", "--host=0.0.0.0"]  
+
+FROM base as test
+
+RUN poetry install
+
+CMD ["poetry", "run", "pytest"]  
