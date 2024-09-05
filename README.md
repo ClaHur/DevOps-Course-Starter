@@ -127,11 +127,11 @@ Docker image can be found [here](https://hub.docker.com/r/clahur/todo-app/tags).
 1. Log into DockerHub locally, with ```docker login```
 2. Build the image, with 
     ```bash
-    $ docker build --target production --tag <user_name>/todo-app:prod .
+    $ docker build --target production --tag <user_name>/todo-app:latest .
     ```
 3. Push the image, with 
     ```bash
-    $ docker push <user_name>/todo-app:prod .
+    $ docker push <user_name>/todo-app:latest
     ```
 
 ### Updating the container
