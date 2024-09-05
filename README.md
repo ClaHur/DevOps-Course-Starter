@@ -120,5 +120,22 @@ Test:
 $ docker run todo-app:test
 ```
 
+## Deploying the app
+### Deploying a new image to Docker Hub
+Docker image can be found [here](https://hub.docker.com/r/clahur/todo-app/tags).
+
+1. Log into DockerHub locally, with ```docker login```
+2. Build the image, with 
+    ```bash
+    $ docker build --target production --tag <user_name>/todo-app:prod .
+    ```
+3. Push the image, with 
+    ```bash
+    $ docker push <user_name>/todo-app:prod .
+    ```
+
+### Updating the container
+1. Find the webhook URL in Azure: this can located under Deployment Center on the app service’s page in the Azure portal.
+2. Run ```curl -v -X POST '<webhook>'``` in a Linux/Mac shell (or Git Bash on Windows)
 
 
