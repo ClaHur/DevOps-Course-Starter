@@ -35,8 +35,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-         docker build --tag ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:latest \
-                      --tag ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ github.sha }} .
+         docker build --target production --tag ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:latest \
+                      --target production --tag ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:${{ github.sha }} .
 
       - name: Push Docker image
         run: | 

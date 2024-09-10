@@ -123,6 +123,7 @@ $ docker run todo-app:test
 ## Deploying the app
 ### Deploying a new image to Docker Hub
 Docker image can be found [here](https://hub.docker.com/r/clahur/todo-app/tags).
+Live site can be found [here](https://clahurtodoapp.azurewebsites.net/).
 
 1. Log into DockerHub locally, with ```docker login```
 2. Build the image, with 
