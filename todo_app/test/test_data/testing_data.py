@@ -18,19 +18,19 @@ class TestData:
 
     fake_to_do_list = {
             'id': fake_to_do_list_id,
-            'name': os.getenv('TO_DO_LIST_NAME'),
+            'name': 'todo',
             'cards': [fake_to_do_card]
         }
     
     fake_in_progress_list = {
             'id': fake_in_progress_list_id,
-            'name': os.getenv('IN_PROGRESS_LIST_NAME'),
+            'name': 'inprogress',
             'cards': [fake_in_progress_card]
         }
 
     fake_done_list = {
             'id': fake_done_list_id,
-            'name': os.getenv('DONE_LIST_NAME'),
+            'name': 'done',
             'cards': [fake_done_card]
         }
        

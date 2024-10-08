@@ -1,11 +1,4 @@
-import pytest
 from todo_app.models import Item, List, ViewModel
-
-@pytest.fixture(autouse=True)
-def set_env_vars(monkeypatch):
-    monkeypatch.setenv('TO_DO_LIST_NAME', 'todo')
-    monkeypatch.setenv('DONE_LIST_NAME', 'done')
-    monkeypatch.setenv('IN_PROGRESS_LIST_NAME', 'in_progress')
 
 to_do_list_name = "todo"
 done_list_name = "done"
