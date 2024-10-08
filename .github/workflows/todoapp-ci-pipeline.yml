@@ -40,7 +40,7 @@ jobs:
 
       - name: Push Docker image
         run: | 
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/todo-app:latest --all-tags
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/todo-app --all-tags
 
       - name: Deploy to Azure
         run: curl -v -X POST '${{ secrets.WEBHOOK_URL }}'
