@@ -3,7 +3,7 @@ from dotenv import load_dotenv, find_dotenv
 import pytest
 from todo_app import app
 import mongomock
-
+from todo_app.assets.constants import in_progress_status
 from todo_app.data.mongo_db_service import MongoDbService
 
 @pytest.fixture
@@ -47,7 +47,7 @@ def test_updating_item_status(client):
 
     # When
     response = client.post('/update_status', 
-                        json={'itemId': itemId, 'newStatus': 'inprogress'}, 
+                        json={'itemId': itemId, 'newStatus': in_progress_status}, 
                         follow_redirects=True)
     
     # Then

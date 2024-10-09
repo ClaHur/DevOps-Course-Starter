@@ -1,15 +1,12 @@
-from todo_app.models import Item, List, ViewModel
-
-to_do_list_name = "todo"
-done_list_name = "done"
-in_progress_list_name = "inprogress"
+from todo_app.models import Item, ViewModel
+from todo_app.assets.constants import todo_status, in_progress_status, done_status
 
 def test_done_items_property_lists_all_done_items():
     # Arrange
-    to_do_item_1 = Item(1,"ToDo1",to_do_list_name)
-    in_progress_item_1 = Item(2,"InProgress1",in_progress_list_name)
-    done_item_1 = Item(3,"Done1",done_list_name) 
-    done_item_2 = Item(4,"Done2",done_list_name) 
+    to_do_item_1 = Item(1,"ToDo1",todo_status)
+    in_progress_item_1 = Item(2,"InProgress1",in_progress_status)
+    done_item_1 = Item(3,"Done1",done_status) 
+    done_item_2 = Item(4,"Done2",done_status) 
 
     items = [to_do_item_1, in_progress_item_1, done_item_1, done_item_2]
     view_model = ViewModel(items)
@@ -25,10 +22,10 @@ def test_done_items_property_lists_all_done_items():
 
 def test_todo_items_property_lists_all_todo_items():
     # Arrange
-    to_do_item_1 = Item(1,"ToDo1",to_do_list_name)
-    to_do_item_2 = Item(2,"ToDo2",to_do_list_name)
-    in_progress_item_1 = Item(2,"InProgress1",in_progress_list_name) 
-    done_item_1 = Item(3,"Done1",done_list_name) 
+    to_do_item_1 = Item(1,"ToDo1",todo_status)
+    to_do_item_2 = Item(2,"ToDo2",todo_status)
+    in_progress_item_1 = Item(2,"InProgress1",in_progress_status) 
+    done_item_1 = Item(3,"Done1",done_status) 
 
     items = [to_do_item_1, in_progress_item_1, to_do_item_2, done_item_1]
     view_model = ViewModel(items)
@@ -45,10 +42,10 @@ def test_todo_items_property_lists_all_todo_items():
 
 def test_inprogress_items_property_lists_all_inprogress_items():
     # Arrange
-    to_do_item_1 = Item(1,"ToDo1",to_do_list_name)
-    in_progress_item_1 = Item(2,"InProgress1",in_progress_list_name) 
-    in_progress_item_2 = Item(2,"InProgress2",in_progress_list_name) 
-    done_item_1 = Item(3,"Done1",done_list_name) 
+    to_do_item_1 = Item(1,"ToDo1",todo_status)
+    in_progress_item_1 = Item(2,"InProgress1",in_progress_status) 
+    in_progress_item_2 = Item(2,"InProgress2",in_progress_status) 
+    done_item_1 = Item(3,"Done1",done_status) 
 
     items = [to_do_item_1, in_progress_item_1, in_progress_item_2, done_item_1]
     view_model = ViewModel(items)

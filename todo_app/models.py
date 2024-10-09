@@ -1,11 +1,13 @@
+from todo_app.assets.constants import todo_status, in_progress_status, done_status
+
 class ListNames:
     def __init__(self):
-        self.to_do = "todo"
-        self.in_progress = "inprogress"
-        self.done = "done"
+        self.to_do = todo_status
+        self.in_progress = in_progress_status
+        self.done = done_status
 
 class Item:
-    def __init__(self, id, description, status = 'todo'):
+    def __init__(self, id, description, status = todo_status):
         self.id = id
         self.description = description
         self.status = status
