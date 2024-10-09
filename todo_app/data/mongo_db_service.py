@@ -1,14 +1,12 @@
-import requests
 import os
-from pymongo import MongoClient
+import pymongo
 from bson import ObjectId
 
-from todo_app.models import Item, List, ListNames
+from todo_app.models import Item, ListNames
 
 class MongoDbService():
     def __init__(self):
-        self.database = MongoClient(os.getenv('MONGODB_PRIMARY_CONNECTION')).todoapp
-        self.base_trello_url = "https://api.trello.com/1"
+        self.database = pymongo.MongoClient(os.getenv('MONGODB_PRIMARY_CONNECTION')).todoapp
         self.list_names = ListNames()
         self.lists_cache = None
 
@@ -41,7 +39,7 @@ class MongoDbService():
     
     def delete_item(self, item_id):
         """
-        Deletes completed cards
+        Deletes completed items
         """
         todoItems = self.database.todo_items
         todoItems.delete_one({"_id": ObjectId(item_id)})

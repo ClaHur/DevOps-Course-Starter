@@ -1,5 +1,3 @@
-import os
-
 class ListNames:
     def __init__(self):
         self.to_do = "todo"
@@ -7,9 +5,9 @@ class ListNames:
         self.done = "done"
 
 class Item:
-    def __init__(self, id, name, status = 'todo'):
+    def __init__(self, id, description, status = 'todo'):
         self.id = id
-        self.name = name
+        self.description = description
         self.status = status
     
 class List:
@@ -18,18 +16,13 @@ class List:
         self.name = name
 
 class ViewModel:
-    def __init__(self, items, lists):
+    def __init__(self, items):
         self._items = items
-        self._lists = lists
         self._list_names = ListNames()
  
     @property
     def items(self):
         return self._items
-    
-    @property
-    def lists(self):
-        return self._lists
     
     @property
     def done_items(self):
