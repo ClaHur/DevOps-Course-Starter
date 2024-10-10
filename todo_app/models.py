@@ -1,43 +1,30 @@
-import os
+from todo_app.assets.constants import todo_status, in_progress_status, done_status
 
 class ListNames:
     def __init__(self):
-        self.to_do = os.getenv("TO_DO_LIST_NAME")
-        self.in_progress = os.getenv("IN_PROGRESS_LIST_NAME")
-        self.done = os.getenv("DONE_LIST_NAME")
+        self.to_do = todo_status
+        self.in_progress = in_progress_status
+        self.done = done_status
 
 class Item:
-    def __init__(self, id, name, status = 'To Do'):
+    def __init__(self, id, description, status = todo_status):
         self.id = id
-        self.name = name
+        self.description = description
         self.status = status
-
-    @classmethod
-    def from_trello_card(cls, card, list):
-        return cls(card['id'], card['name'], list.name)
     
 class List:
     def __init__(self, id, name):
         self.id = id
         self.name = name
 
-    @classmethod
-    def from_trello_list(cls, list):
-        return cls(list['id'], list['name'])
-
 class ViewModel:
-    def __init__(self, items, lists):
+    def __init__(self, items):
         self._items = items
-        self._lists = lists
         self._list_names = ListNames()
  
     @property
     def items(self):
         return self._items
-    
-    @property
-    def lists(self):
-        return self._lists
     
     @property
     def done_items(self):

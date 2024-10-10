@@ -1,51 +1,73 @@
-import os
+import re
 from dotenv import load_dotenv, find_dotenv
 import pytest
-import requests
 from todo_app import app
-from todo_app.test.test_data.testing_data import TestData
+import mongomock
+from todo_app.assets.constants import in_progress_status
+from todo_app.data.mongo_db_service import MongoDbService
 
 @pytest.fixture
 def client():
     file_path = find_dotenv('.env.test')
     load_dotenv(file_path, override=True)
-
-    test_app = app.create_app()
-
-    with test_app.test_client() as client:
-        yield client
-
-class StubResponse():
-    def __init__(self, fake_response_data):
-        self.fake_response_data = fake_response_data
-
-    def json(self):
-        return self.fake_response_data
-
-
-def stub(url, params={}):
-    test_board_id = os.environ.get('TRELLO_BOARD_ID')
-
-    url_mappings = {
-        f'https://api.trello.com/1/boards/{test_board_id}/lists': TestData.fake_lists,
-        f'https://api.trello.com/1/boards/{test_board_id}/cards': TestData.fake_cards,
-        f'https://api.trello.com/1/list/{TestData.fake_to_do_list_id}': TestData.fake_to_do_list,
-        f'https://api.trello.com/1/list/{TestData.fake_in_progress_list_id}': TestData.fake_in_progress_list,
-        f'https://api.trello.com/1/list/{TestData.fake_done_list_id}': TestData.fake_done_list
-    }
-
-    fake_response_data = url_mappings.get(url)
-    if fake_response_data is not None:
-        return StubResponse(fake_response_data)
-
-    raise Exception(f'Integration test did not expect URL "{url}"')
-
-def test_index_page(monkeypatch, client):
-    monkeypatch.setattr(requests, 'get', stub)
-
+    
+    with mongomock.patch(servers=(('fakemongo.com', 27017),)):
+        test_app = app.create_app()
+        with test_app.test_client() as client:
+            yield client
+            
+def test_index_page(client):
+    # When
     response = client.get('/')
 
+    # Then
     assert response.status_code == 200
-    assert 'To Do Card' in response.data.decode()
-    assert 'In Progress Card' in response.data.decode()
-    assert 'Done Card' in response.data.decode()
+    print(response.data.decode())
+    assert "Clare's todo list" in response.data.decode()
+    assert 'What do you need to do?' in response.data.decode()
+    assert 'Add item' in response.data.decode()
+
+def test_adding_item(client):
+    # When
+    response = client.post('/add_item', data={
+        'todo': 'Test item',
+    }, follow_redirects=True)
+
+    # Then
+    assert "Clare's todo list" in response.data.decode()
+    assert 'Test item' in response.data.decode()
+
+
+def test_updating_item_status(client):
+    # Given
+    response = client.post('/add_item', data={
+        'todo': 'Test item',
+    }, follow_redirects=True)
+    itemId = str(MongoDbService().get_items()[0].id)
+
+    # When
+    response = client.post('/update_status', 
+                        json={'itemId': itemId, 'newStatus': in_progress_status}, 
+                        follow_redirects=True)
+    
+    # Then
+    # Verify 'Test item' is in the 'In Progress' column
+    pattern = r'(In Progress)(.|\n)*(Test item)(.|\n)*(Done)'
+    match = re.search(pattern, response.data.decode())
+    assert match is not None
+
+def test_deleting(client):
+    # Given
+    response = client.post('/add_item', data={
+        'todo': 'Test item',
+    }, follow_redirects=True)
+    itemId = str(MongoDbService().get_items()[0].id)
+
+    # When
+    response = client.post('/delete_item', 
+                        json={'itemId': itemId}, 
+                        follow_redirects=True)
+    
+    # Then
+    assert 'Test item' not in response.data.decode()
+

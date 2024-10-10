@@ -58,17 +58,10 @@ Press CTRL+C to quit
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
-## Connection to Trello
-To connect the app to Trello:
-
-- Create a Trello account and a 'todo' board if you don't have one already
-- Create an API Key for Trello. To do this you’ll first need to create a Trello Power Up [from this page](https://trello.com/power-ups/admin)
-- After creating a Trello Power Up you’ll be given the option to generate a new API key
-- Create an API Token for Trello. This can be done by clicking the “Token” link on the same page where your API key is displayed.
-
-Add you API key, Token, Board ID and list names* into the .env file. You can use the instructions [here](https://developer.atlassian.com/cloud/trello/guides/rest-api/api-introduction/#your-first-api-call) to find out you Board ID.
-
-NOTE: The app assumes your Trello board has two lists. The first should be the 'todo' list and the second should be the 'done' list. Choose whatever names you like for your lists, so long as they match between Trello and your env file. 
+## Connection to MongoDB
+To connect the app to MongoDB:
+- Get the primary connection string for your DB from the Azure Portal
+- Add this to your env file as per the template
 
 ## Tests
 To run the automated unit tests:

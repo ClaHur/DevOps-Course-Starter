@@ -50,12 +50,6 @@
         state: restarted
       become: yes
   vars_prompt:
-      - name: "trello_api_key"
-        prompt: "Enter your Trello API key"
-        private: no
-      - name: "trello_token"
-        prompt: "Enter your Trello token"
-        private: yes
-      - name: "trello_board_id"
-        prompt: "Enter your Trello board ID"
+      - name: "mongodb_primary_connection"
+        prompt: "Enter your Mongo DB primary connection string"
         private: no

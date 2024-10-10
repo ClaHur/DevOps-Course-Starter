@@ -20,7 +20,7 @@
         <ul class="list-group mb-4">
           {% for item in view_model.todo_items %}
               <div class="to-do-item">
-                <li>{{ item.name }}</li>
+                <li>{{ item.description }}</li>
                 <span><button class="status-change-button right" onClick="updateStatus('{{ item.id }}', '{{ list_names.in_progress }}')">></button></span>
               </div>
           {% endfor %}
@@ -31,7 +31,7 @@
         <ul class="list-group mb-4">
           {% for item in view_model.inprogress_items %}
               <div class="in-progress-item">
-                <li>{{ item.name }}</li>
+                <li>{{ item.description }}</li>
                 <span><button class="status-change-button left" onClick="updateStatus('{{ item.id }}', '{{ list_names.to_do }}')"><</button></span>
                 <span><button class="status-change-button right" onClick="updateStatus('{{ item.id }}', '{{ list_names.done }}')">></button></span>
               </div>
@@ -43,9 +43,9 @@
         <ul class="list-group mb-4">
           {% for item in view_model.done_items %}
               <div class="done-item">
-                <li>{{ item.name }}</li>
+                <li>{{ item.description }}</li>
                 <span><button class="status-change-button left" onClick="updateStatus('{{ item.id }}', '{{ list_names.in_progress }}')"><</button></span>
-                <span><button class="status-change-button right tick" onClick="deleteCard('{{ item.id }}')">✓</button></span>
+                <span><button class="status-change-button right tick" onClick="deleteItem('{{ item.id }}')">✓</button></span>
               </div>
           {% endfor %}
         </ul>
@@ -170,7 +170,7 @@
       });
   }
 
-  const deleteCard = function(itemId) {
+  const deleteItem = function(itemId) {
       fetch("/delete_item", {
         method: 'POST',
         headers: {
