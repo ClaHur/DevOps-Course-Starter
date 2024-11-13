@@ -26,6 +26,7 @@ def test_index_page(client):
     # Given
     with client.session_transaction() as session:
         session["user_id"] = "userid"
+        session["username"] = "username"
 
     # When
     response = client.get('/')
@@ -33,7 +34,7 @@ def test_index_page(client):
     # Then
     assert response.status_code == 200
     print(response.data.decode())
-    assert "Clare's todo list" in response.data.decode()
+    assert "username's todo list" in response.data.decode()
     assert 'What do you need to do?' in response.data.decode()
     assert 'Add item' in response.data.decode()
 
@@ -41,6 +42,7 @@ def test_adding_item(client):
     # Given
     with client.session_transaction() as session:
         session["user_id"] = "userid"
+        session["username"] = "username"
 
     # When
     response = client.post('/add_item', data={
@@ -48,7 +50,7 @@ def test_adding_item(client):
     }, follow_redirects=True)
 
     # Then
-    assert "Clare's todo list" in response.data.decode()
+    assert "username's todo list" in response.data.decode()
     assert 'Test item' in response.data.decode()
 
 
@@ -56,6 +58,7 @@ def test_updating_item_status(client):
     # Given
     with client.session_transaction() as session:
         session["user_id"] = "userid"
+        session["username"] = "username"
 
     response = client.post('/add_item', data={
         'todo': 'Test item',
@@ -77,6 +80,7 @@ def test_deleting(client):
     # Given
     with client.session_transaction() as session:
         session["user_id"] = "userid"
+        session["username"] = "username"
 
     response = client.post('/add_item', data={
         'todo': 'Test item',

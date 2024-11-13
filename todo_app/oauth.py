@@ -25,4 +25,8 @@ def github_logged_in(blueprint, token):
         session['user_id'] = None
         return False
     response = blueprint.session.get("/user")
-    session['user_id'] = response.json()['id']
+    user_id = response.json()['id']
+    username = response.json()['login']
+
+    session['user_id'] = user_id
+    session['username'] = username
