@@ -12,6 +12,7 @@ requests = "^2.31.0"
 pytest = "^8.1.1"
 pymongo = "^4.10.1"
 mongomock = "^4.2.0.post1"
+flask-dance = "^7.1.0"
 
 [tool.poetry.dev-dependencies]
 
