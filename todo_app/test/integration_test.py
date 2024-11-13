@@ -5,11 +5,16 @@ from todo_app import app
 import mongomock
 from todo_app.assets.constants import in_progress_status
 from todo_app.data.mongo_db_service import MongoDbService
+from flask_dance.consumer.storage import MemoryStorage
+from todo_app.oauth import blueprint
 
 @pytest.fixture
-def client():
+def client(monkeypatch):
     file_path = find_dotenv('.env.test')
     load_dotenv(file_path, override=True)
+
+    storage = MemoryStorage({"access_token": "fake-token"})
+    monkeypatch.setattr(blueprint, 'storage', storage)
     
     with mongomock.patch(servers=(('fakemongo.com', 27017),)):
         test_app = app.create_app()
