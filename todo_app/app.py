@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, jsonify
 from todo_app.data.mongo_db_service import MongoDbService
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from todo_app.flask_config import Config
-from todo_app.models import ListNames, ViewModel
+from todo_app.models import ListNames, ViewModel, ViewModelUsers
 from todo_app.oauth import blueprint, login_required
 
 def create_app():
@@ -18,7 +18,21 @@ def create_app():
     def index():
         item_view_model = ViewModel(mongodb_service.get_items(session['user_id']))
         list_names = ListNames()
-        return render_template('index.html', view_model=item_view_model, list_names=list_names)
+        user_is_admin = mongodb_service.check_admin_user(session['user_id'])
+        return render_template('index.html', view_model=item_view_model, list_names=list_names, username=session['username'], show_admin_link = user_is_admin)
+    
+    @app.route('/admin')
+    @login_required
+    def admin():
+        user_is_admin = mongodb_service.check_admin_user(session['user_id'])
+        if not user_is_admin:
+            return render_template('unauthorised.html')
+        users_view_model = ViewModelUsers(mongodb_service.get_users())
+        return render_template('admin.html', view_model=users_view_model)
+    
+    @app.route('/unauthorised')
+    def unauthorised():
+        return render_template('unauthorised.html')
 
     @app.route("/add_item", methods=["POST"])
     @login_required
@@ -41,5 +55,25 @@ def create_app():
         item_id = request.json['itemId']
         mongodb_service.delete_item(item_id)
         return redirect('/')
+    
+    @app.route("/delete_user", methods=["POST"])
+    @login_required
+    def delete_user():
+        user_id = request.json['userId']
+        deleteUser = mongodb_service.delete_user(user_id, session['user_id'])
+        if deleteUser == True:
+            return jsonify(success=True), 200
+        else:
+            return jsonify(success=False, error="Unauthorized or deletion failed"), 403
+    
+    @app.route("/toggle_admin", methods=["POST"])
+    @login_required
+    def toggle_admin():
+        user_id = request.json['userId']
+        toggleAdmin = mongodb_service.toggle_admin(user_id, session['user_id'])
+        if toggleAdmin == True:
+            return jsonify(success=True), 200
+        else:
+            return jsonify(success=False, error="Unauthorized or toggle failed"), 403
     
     return app

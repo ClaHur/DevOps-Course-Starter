@@ -2,6 +2,11 @@
 {% block title %}To-Do App{% endblock %}
 
 {% block content %}
+  {% if show_admin_link %}
+    <div class="admin-link">
+      <a href="/admin" class="btn btn-primary">View Admin area</a>
+    </div>
+  {% endif %}
   <div class="jumbotron">
     <h1 class="display-4">{{ username }}'s todo list</h1>
   </div>
@@ -145,6 +150,32 @@
   .list-done .done-item {
     border-color: green;
     background-color: #d9edd5;
+  }
+  .btn-primary  {
+      text-decoration: none;
+      color: white;
+      border-color: grey;
+      background-color: grey; 
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      margin-bottom: 1em;
+      margin-right: 0.5em;
+  }
+  .btn-primary:hover {
+      background-color: darkgrey; 
+      text-decoration: none;
+      color: white;
+  }
+  .btn-primary:active {
+      background-color: grey; 
+      box-shadow: 0 2px 4px grey;
+  }
+  .admin-link {
+      display: flex;
+      justify-content: right;
+      margin-top: 20px;
   }
 
   @media screen and (max-width: 767px) {

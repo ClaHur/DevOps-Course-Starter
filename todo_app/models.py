@@ -11,6 +11,13 @@ class Item:
         self.id = id
         self.description = description
         self.status = status
+
+class User:
+    def __init__(self, id, user_id, role, username):
+        self.id = id
+        self.user_id = user_id
+        self.role = role
+        self.username = username
     
 class List:
     def __init__(self, id, name):
@@ -37,3 +44,12 @@ class ViewModel:
     @property
     def inprogress_items(self):
         return [item for item in self._items if item.status == self._list_names.in_progress]
+    
+
+class ViewModelUsers:
+    def __init__(self, users):
+        self._users = users
+
+    @property
+    def users(self):
+        return self._users

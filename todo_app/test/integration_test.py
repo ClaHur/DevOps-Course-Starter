@@ -33,7 +33,6 @@ def test_index_page(client):
 
     # Then
     assert response.status_code == 200
-    print(response.data.decode())
     assert "username's todo list" in response.data.decode()
     assert 'What do you need to do?' in response.data.decode()
     assert 'Add item' in response.data.decode()
@@ -95,3 +94,4 @@ def test_deleting(client):
     # Then
     assert 'Test item' not in response.data.decode()
 
+# TODO: Test Admin Page
