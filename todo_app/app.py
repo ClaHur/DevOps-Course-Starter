@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from todo_app.data.mongo_db_service import MongoDbService
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -16,7 +16,7 @@ def create_app():
     @app.route('/')
     @login_required
     def index():
-        item_view_model = ViewModel(mongodb_service.get_items())
+        item_view_model = ViewModel(mongodb_service.get_items(session['user_id']))
         list_names = ListNames()
         return render_template('index.html', view_model=item_view_model, list_names=list_names)
 
@@ -24,7 +24,7 @@ def create_app():
     @login_required
     def add_item():
         item_name = request.form["todo"]
-        mongodb_service.add_item(item_name)
+        mongodb_service.add_item(item_name, session['user_id'])
         return redirect('/')
 
     @app.route("/update_status", methods=["POST"])

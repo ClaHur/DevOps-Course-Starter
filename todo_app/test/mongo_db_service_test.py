@@ -13,13 +13,14 @@ def mongo_service():
 def test_get_items(mongo_service):
     # Given
     mock_items = [
-        {"_id": ObjectId(), "description": "Test Item 1", "status": "todo"},
-        {"_id": ObjectId(), "description": "Test Item 2", "status": "done"}
+        {"_id": ObjectId(), "description": "Test Item 1", "status": "todo", "user_id": "userid"},
+        {"_id": ObjectId(), "description": "Test Item 2", "status": "done", "user_id": "userid"},
+        {"_id": ObjectId(), "description": "Test Item 2", "status": "done", "user_id": "otheruserid"}
     ]
     mongo_service.database.todo_items.insert_many(mock_items)
 
     # When
-    items = mongo_service.get_items()
+    items = mongo_service.get_items("userid") # should only return items with this user id
 
     # Then
     assert len(items) == 2
@@ -30,7 +31,7 @@ def test_get_items(mongo_service):
 
 def test_add_item(mongo_service):
     # When
-    mongo_service.add_item("New Test Item")
+    mongo_service.add_item("New Test Item", "userid")
 
     # Then
     inserted_item = mongo_service.database.todo_items.find_one({"description": "New Test Item"})

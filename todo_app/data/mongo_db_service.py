@@ -1,6 +1,7 @@
 import os
 import pymongo
 from bson import ObjectId
+from flask import session
 
 from todo_app.models import Item, ListNames
 
@@ -10,23 +11,23 @@ class MongoDbService():
         self.list_names = ListNames()
         self.lists_cache = None
 
-    def get_items(self):
+    def get_items(self, user_id):
         """
-        Fetches all items in the mongo db database
+        Fetches all items in the mongoDb database for a given user
         """
         todoItems = self.database.todo_items
         items = []
-        for item in todoItems.find():
+        for item in todoItems.find({"user_id" : user_id}):
             item = Item(item["_id"], item["description"], item["status"])
             items.append(item)
 
         return items
 
-    def add_item(self, item_name):
+    def add_item(self, item_name, user_id):
         """
-        Adds a new item with the specified title to the list.
+        Adds a new item with the specified title and user id to the mongoDb database
         """
-        todoItem = { "description": item_name, "status": "todo" }
+        todoItem = { "description": item_name, "status": "todo", "user_id": user_id }
         self.database.todo_items.insert_one(todoItem)
 
     def update_status(self, item_id, new_status):

@@ -7,6 +7,7 @@ from todo_app.assets.constants import in_progress_status
 from todo_app.data.mongo_db_service import MongoDbService
 from flask_dance.consumer.storage import MemoryStorage
 from todo_app.oauth import blueprint
+from flask import session
 
 @pytest.fixture
 def client(monkeypatch):
@@ -22,6 +23,10 @@ def client(monkeypatch):
             yield client
             
 def test_index_page(client):
+    # Given
+    with client.session_transaction() as session:
+        session["user_id"] = "userid"
+
     # When
     response = client.get('/')
 
@@ -33,6 +38,10 @@ def test_index_page(client):
     assert 'Add item' in response.data.decode()
 
 def test_adding_item(client):
+    # Given
+    with client.session_transaction() as session:
+        session["user_id"] = "userid"
+
     # When
     response = client.post('/add_item', data={
         'todo': 'Test item',
@@ -45,10 +54,13 @@ def test_adding_item(client):
 
 def test_updating_item_status(client):
     # Given
+    with client.session_transaction() as session:
+        session["user_id"] = "userid"
+
     response = client.post('/add_item', data={
         'todo': 'Test item',
     }, follow_redirects=True)
-    itemId = str(MongoDbService().get_items()[0].id)
+    itemId = str(MongoDbService().get_items('userid')[0].id)
 
     # When
     response = client.post('/update_status', 
@@ -63,10 +75,13 @@ def test_updating_item_status(client):
 
 def test_deleting(client):
     # Given
+    with client.session_transaction() as session:
+        session["user_id"] = "userid"
+
     response = client.post('/add_item', data={
         'todo': 'Test item',
     }, follow_redirects=True)
-    itemId = str(MongoDbService().get_items()[0].id)
+    itemId = str(MongoDbService().get_items('userid')[0].id)
 
     # When
     response = client.post('/delete_item', 
