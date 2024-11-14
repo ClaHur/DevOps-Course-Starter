@@ -59,6 +59,7 @@ Press CTRL+C to quit
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
 ## Connection to MongoDB
+The application stores todo tasks in MongoDB, a non-relational database which is encrypted (at rest and in transit) [by default](https://learn.microsoft.com/en-us/azure/cosmos-db/database-encryption-at-rest).
 To connect the app to MongoDB:
 - Get the primary connection string for your DB from the Azure Portal
 - Add this to your env file as per the template
